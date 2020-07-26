@@ -22,3 +22,20 @@ BenchMark.benchMark_double                10  avgt    2  0.134          ms/op
 BenchMark.benchMark_double               100  avgt    2  0.235          ms/op
 BenchMark.benchMark_double               500  avgt    2  0.625          ms/op
 BenchMark.benchMark_double              1000  avgt    2  1.033          ms/op
+
+BenchMark.benchMark_bigdecimal                 10  avgt    2  0.272          ms/op
+BenchMark.benchMark_bigdecimal                100  avgt    2  0.594          ms/op
+BenchMark.benchMark_bigdecimal                500  avgt    2  1.958          ms/op
+BenchMark.benchMark_bigdecimal               1000  avgt    2  3.689          ms/op
+BenchMark.benchMark_date                       10  avgt    2  0.151          ms/op
+BenchMark.benchMark_date                      100  avgt    2  0.234          ms/op
+BenchMark.benchMark_date                      500  avgt    2  0.630          ms/op
+BenchMark.benchMark_date                     1000  avgt    2  1.034          ms/op
+BenchMark.benchMark_date_bigdecimal            10  avgt    2  0.243          ms/op
+BenchMark.benchMark_date_bigdecimal           100  avgt    2  0.781          ms/op
+BenchMark.benchMark_date_bigdecimal           500  avgt    2  3.266          ms/op
+BenchMark.benchMark_date_bigdecimal          1000  avgt    2  6.048          ms/op
+BenchMark.benchMark_double                     10  avgt    2  0.135          ms/op
+BenchMark.benchMark_double                    100  avgt    2  0.238          ms/op
+BenchMark.benchMark_double                    500  avgt    2  0.671          ms/op
+BenchMark.benchMark_double                   1000  avgt    2  1.033          ms/op

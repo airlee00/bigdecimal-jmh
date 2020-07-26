@@ -16,9 +16,10 @@ import org.openjdk.jmh.annotations.Warmup;
 
 import com.google.common.hash.Hasher;
 
-import calcCommonDTO.Interest;
 import calcCommonDTO.InterestList;
 import calcCommonDTO.InterestList2;
+import calcCommonDTO.InterestList3;
+import calcDateUtil.CalcDateUtils;
 import calcUtil.CalcInterestRates;
 import calcUtil.CalcUtilTest;
 
@@ -41,12 +42,14 @@ public class BenchMark {
         public String password = "4v3rys3kur3p455w0rd";
 
     }
+    private int date1 = 20200524;
+	private int date2 = 20200702;
+	private java.sql.Date date11 = CalcDateUtils.toDate(""+date1);
+	private java.sql.Date date22= CalcDateUtils.toDate(""+date2);
+
 
     @Benchmark
     public void benchMark_double(ExecutionPlan plan) {
-
-        int date1 = 20200524;
-		int date2 = 20200702;
 
 		InterestList irl = new InterestList();
 		//InterestList irl1 = new InterestList();
@@ -57,37 +60,26 @@ public class BenchMark {
 		double accrualIr = 0;
 
 		for (int i = plan.iterations; i > 0; i--) {
-		    accrualIr = CalcInterestRates.caGetS1DA(irl, date1, date2, 1, date1);
+		    accrualIr = CalcInterestRates.caGetS1DA1(irl, date1, date2, 1, date1);
 		}
     }
     @Benchmark
     public void benchMark_date(ExecutionPlan plan) {
 
-    	java.sql.Date date1 = CalcInterestRates.toDate("20200524");
-    	java.sql.Date date2 = CalcInterestRates.toDate("20200702");
-
     	InterestList irl = new InterestList();
 
     	CalcUtilTest.getInterestRate(irl);
-    	//CalcUtilTest.setInterest(irl1, 10);
-
-
-    	  int sd = CalcInterestRates.formatDate(date1,"yyyyMMdd");
-    	  int ed = CalcInterestRates.formatDate(date2,"yyyyMMdd");
 
     	double accrualIr = 0;
 
     	for (int i = plan.iterations; i > 0; i--) {
-    		accrualIr = CalcInterestRates.caGetS1DA(irl, sd, ed, 1, ed);
+    		accrualIr = CalcInterestRates.caGetS1DA1(irl, date1, date2, 1, date2);
     	}
 
     }
 
     @Benchmark
     public void benchMark_bigdecimal(ExecutionPlan plan) {
-
-        int date1 = 20200524;
-		int date2 = 20200702;
 
     	InterestList irl = new InterestList();
     	InterestList2 irl2 = new InterestList2();
@@ -100,6 +92,23 @@ public class BenchMark {
 		for (int i = plan.iterations; i > 0; i--) {
 			accrualIr1 = CalcInterestRates.caGetS1DA2(irl2, date1, date2, 1, date1);
 		}
+    }
+
+    @Benchmark
+    public void benchMark_date_bigdecimal(ExecutionPlan plan) {
+
+    	InterestList3 irl3 = new InterestList3();
+
+    	CalcUtilTest.getInterestRate3(irl3);
+
+
+    	double accrualIr1 ;//= BigDecimal.ZERO;
+    	for (int i = plan.iterations; i > 0; i--) {
+    		accrualIr1 = CalcInterestRates.caGetS1DA4(irl3, date1, date2, 1, date1);
+    	}
+
+
+
     }
 //    @Fork(value = 1, warmups = 1)
 //    @Benchmark

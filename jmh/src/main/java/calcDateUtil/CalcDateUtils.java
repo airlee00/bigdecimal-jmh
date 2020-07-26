@@ -1,13 +1,21 @@
 package calcDateUtil;
 
+import java.sql.Date;
+import java.util.GregorianCalendar;
+
+import org.joda.time.DateTime;
+import org.joda.time.Days;
+import org.joda.time.Months;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 // 경과 연, 월, 일
 class ElapsedYmd implements IElapsedYmd {
 	private int years;
 	private int months;
 	private int days;
-	
-	
+
+
 	public int getYears() {
 		return years;
 	}
@@ -26,23 +34,23 @@ class ElapsedYmd implements IElapsedYmd {
 	void setDays(int days) {
 		this.days = days;
 	}
-	
+
 	void addYears(int years) {
 		this.years += years;
 	}
-	
+
 	void addMonths(int months) {
 		this.months += months;
 	}
-	
+
 	void addDays(int days) {
 		this.days += days;
 	}
-	
+
 }
 
 public class CalcDateUtils {
-	
+
 	// y년은 윤년인가?
 	public static boolean calcIsLeapYear(int y) {
 	  return y % 4 == 0 && y % 100 != 0 || y % 400 == 0;
@@ -212,6 +220,12 @@ public class CalcDateUtils {
 	  return elapsedMonths;
 	}
 
+	public static int calcDiffMonths(java.sql.Date start, java.sql.Date end) {
+		DateTime s = new DateTime(start);
+		DateTime e = new DateTime(end);
+		return Months.monthsBetween(s.withTimeAtStartOfDay(), e.withTimeAtStartOfDay()).getMonths();
+	}
+
 	// 경과개월수를 구한다 (시작년월, 기준년월)
 	public static int calcDiffMonthsYm(int ym0, int ym) {
 	  return (ym / 100 - ym0 / 100) * 12 + (ym % 100 - ym0 % 100);
@@ -220,6 +234,11 @@ public class CalcDateUtils {
 	// 날수를 구한다 (시작일, 기준일)
 	public static int calcDiffDays(int ymd0, int ymd) {
 	  return calcGetJd(ymd) - calcGetJd(ymd0);
+	}
+	public static int calcDiffDays(Date start, Date end) {
+		DateTime s = new DateTime(start);
+		DateTime e = new DateTime(end);
+		return Days.daysBetween(s.withTimeAtStartOfDay(), e.withTimeAtStartOfDay()).getDays();
 	}
 
 	// 날짜에 년수를 더한다 (날짜, 년수)
@@ -247,4 +266,32 @@ public class CalcDateUtils {
 	  return calcGetYmd(calcGetJd(ymd) + days);
 	}
 
+
+	public static int formatDate(java.sql.Date date, String pattern) {
+		DateTime dt = new DateTime(date);
+		String d = formatDate(dt, pattern);
+
+		return Integer.valueOf(d);
+	}
+
+	static DateTimeFormatter f = DateTimeFormat.forPattern("yyyyMMdd");
+
+	public static java.sql.Date toDate(String date) {
+		DateTime dateTime = f.parseDateTime(date);
+
+		return new java.sql.Date(dateTime.getMillis());
+
+	}
+	public static java.util.Date toDate(int date) {
+		int year = calcGetYmd(date);
+		//Date d = new java.sql.Date(new GregorianCalendar(year, mon, day)..getTime());
+		long dateTime = f.parseMillis(""+date);
+		//System.out.println(dateTime.getMillis() + " ===" + year);
+		return new java.sql.Date(dateTime);
+
+	}
+
+	private static String formatDate(DateTime dateTime, String pattern) {
+		return dateTime.toString(pattern);
+	}
 }
