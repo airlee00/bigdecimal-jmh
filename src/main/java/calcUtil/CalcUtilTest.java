@@ -13,13 +13,29 @@ import calcCommonDTO.InterestList2;
 import calcCommonDTO.InterestList3;
 import calcDateUtil.CalcDateUtils;
 import calcDateUtil.IElapsedYmd;
+/*
+ * Benchmark                            (iterations)  Mode  Cnt  Score   Error  Units
+BenchMark.benchMark_bigdecimal                 10  avgt       0.245          ms/op
+BenchMark.benchMark_date                       10  avgt       0.121          ms/op
+BenchMark.benchMark_date_bigdecimal            10  avgt       0.194          ms/op
+BenchMark.benchMark_double                     10  avgt       0.125          ms/op
 
+jdk8
+Benchmark                            (iterations)  Mode  Cnt  Score   Error  Units
+BenchMark.benchMark_bigdecimal                 10  avgt       0.267          ms/op
+BenchMark.benchMark_date                       10  avgt       0.131          ms/op
+BenchMark.benchMark_date_bigdecimal            10  avgt       0.202          ms/op
+BenchMark.benchMark_double                     10  avgt       0.132          ms/op
+ */
 
 public class CalcUtilTest {
 
-	static String filepath = ("/Users/kichaelee/git/bigdecimal-jmh/jmh/src/main/java/calcCommonDTO/testInterestRates.TXT");
+  
+	static String filepath = (InterestList.class.getResource(".").toString() + "/testInterestRates.TXT");
 
 	public static void setInterest(InterestList irl, int count) {
+	  InterestList.class.getResource(".").toString();
+	  
 		for (int i = 0; i < count; ++i) {
 			irl.setInterest(new Interest(CalcDateUtils.calcAddMonths(20150201, i), 0.04));
 		}

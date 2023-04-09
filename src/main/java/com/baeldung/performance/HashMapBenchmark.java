@@ -6,7 +6,9 @@ import java.util.concurrent.TimeUnit;
 
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
+import org.openjdk.jmh.annotations.Fork;
 import org.openjdk.jmh.annotations.Level;
+import org.openjdk.jmh.annotations.Measurement;
 import org.openjdk.jmh.annotations.Mode;
 import org.openjdk.jmh.annotations.OutputTimeUnit;
 import org.openjdk.jmh.annotations.Scope;
@@ -17,9 +19,19 @@ import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 
+/*
+Benchmark                         Mode  Cnt  Score   Error  Units
+HashMapBenchmark.testContainsKey  avgt    2  4.748          ns/op
+HashMapBenchmark.testGet          avgt    2  6.205          ns/op
+HashMapBenchmark.testPut          avgt    2  9.900          ns/op
+HashMapBenchmark.testRemove       avgt    2  6.834          ns/op
+ */
 @BenchmarkMode(Mode.AverageTime)
-@OutputTimeUnit(TimeUnit.MICROSECONDS)
+@OutputTimeUnit(TimeUnit.NANOSECONDS)
+//@State(Scope.Benchmark)
+//@Fork(value = 1, jvmArgs = {"-Xms2G", "-Xmx2G"})
 @Warmup(iterations = 1)
+@Measurement(iterations = 2)
 public class HashMapBenchmark {
 
     @State(Scope.Thread)

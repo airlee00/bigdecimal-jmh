@@ -4,29 +4,37 @@ import java.math.BigDecimal;
 
 public class Interest2 {
 
-	private BigDecimal rate;
-	private int    endDate;
+  private BigDecimal rate;
+  private int    endDate;
 
-	public Interest2(int date, BigDecimal rate) {
-		this.endDate = date;
-		this.rate = rate;
-	}
+  public Interest2() {
+  }
 
-	public BigDecimal getRate() {
-		return rate;
-	}
+  public Interest2(int date, BigDecimal rate) {
+    this.endDate = date;
+    this.rate = rate;
+  }
 
-	public void setRate(BigDecimal rate) {
-		this.rate = rate;
-	}
+  public BigDecimal getRate() {
+    return rate;
+  }
 
-	public int getEndDate() {
-		return endDate;
-	}
+  public void setRate(BigDecimal rate) {
+    this.rate = rate;
+  }
 
-	public void setEndDate(int endDate) {
-		this.endDate = endDate;
-	}
+  public int getEndDate() {
+    return endDate;
+  }
+
+  public void setEndDate(int endDate) {
+    this.endDate = endDate;
+  }
+
+  @Override
+  public String toString() {
+    return "Interest2 [rate=" + rate + ", endDate=" + endDate + "]";
+  }
 
 
 }

@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 import org.apache.commons.lang3.StringUtils;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
+import org.openjdk.jmh.annotations.Fork;
 import org.openjdk.jmh.annotations.Measurement;
 import org.openjdk.jmh.annotations.Mode;
 import org.openjdk.jmh.annotations.OutputTimeUnit;
@@ -22,39 +23,35 @@ import org.openjdk.jmh.runner.options.OptionsBuilder;
 import com.google.common.base.Splitter;
 /*
  * Benchmark                                          Mode  Cnt      Score   Error  Units
-StringPerformance.benchmarkGuavaSplitter             ss          30.895          ms/op
-StringPerformance.benchmarkIntegerToString           ss           5.460          ms/op
-StringPerformance.benchmarkPrecompiledMatches        ss           5.621          ms/op
-StringPerformance.benchmarkStringBuffer              ss           6.352          ms/op
-StringPerformance.benchmarkStringBuilder             ss           5.095          ms/op
-StringPerformance.benchmarkStringCompareTo           ss           1.034          ms/op
-StringPerformance.benchmarkStringConcat              ss       25762.824          ms/op
-StringPerformance.benchmarkStringConstructor         ss           1.637          ms/op
-StringPerformance.benchmarkStringConvertPlus         ss           7.657          ms/op
-StringPerformance.benchmarkStringDynamicConcat       ss       44520.529          ms/op
-StringPerformance.benchmarkStringEquals              ss           2.093          ms/op
-StringPerformance.benchmarkStringEqualsIgnoreCase    ss           2.112          ms/op
-StringPerformance.benchmarkStringFormat_d            ss          41.970          ms/op
-StringPerformance.benchmarkStringFormat_s            ss          57.806          ms/op
-StringPerformance.benchmarkStringIndexOf             ss          19.308          ms/op
-StringPerformance.benchmarkStringIntern              ss          13.722          ms/op
-StringPerformance.benchmarkStringIsEmpty             ss           1.910          ms/op
-StringPerformance.benchmarkStringLengthZero          ss           2.107          ms/op
-StringPerformance.benchmarkStringLiteral             ss           1.507          ms/op
-StringPerformance.benchmarkStringMatches             ss          27.542          ms/op
-StringPerformance.benchmarkStringReplace             ss          29.844          ms/op
-StringPerformance.benchmarkStringSplit               ss          31.375          ms/op
-StringPerformance.benchmarkStringSplitPattern        ss          39.490          ms/op
-StringPerformance.benchmarkStringTokenizer           ss          29.353          ms/op
-StringPerformance.benchmarkStringUtilsReplace        ss           6.507          ms/op
-StringPerformance.benchmarkStringValueOf             ss           4.041          ms/op
+
+Benchmark                                          Mode  Cnt       Score   Error  Units
+StringPerformance.benchmarkIntegerToString         avgt    2      20.941          ns/op
+StringPerformance.benchmarkPrecompiledMatches      avgt    2      44.270          ns/op
+StringPerformance.benchmarkStringBuffer            avgt    2      32.947          ns/op
+StringPerformance.benchmarkStringBuilder           avgt    2      27.712          ns/op
+StringPerformance.benchmarkStringCompareTo         avgt    2       3.611          ns/op
+StringPerformance.benchmarkStringConstructor       avgt    2       5.694          ns/op
+StringPerformance.benchmarkStringConvertPlus       avgt    2      12.752          ns/op
+StringPerformance.benchmarkStringDynamicConcat     avgt    2  107080.162          ns/op
+StringPerformance.benchmarkStringEquals            avgt    2       2.639          ns/op
+StringPerformance.benchmarkStringEqualsIgnoreCase  avgt    2       2.641          ns/op
+StringPerformance.benchmarkStringFormat_d          avgt    2     413.527          ns/op
+StringPerformance.benchmarkStringFormat_s          avgt    2     526.412          ns/op
+StringPerformance.benchmarkStringIndexOf           avgt    2    6230.803          ns/op
+StringPerformance.benchmarkStringIsEmpty           avgt    2       2.284          ns/op
+StringPerformance.benchmarkStringMatches           avgt    2     188.729          ns/op
+StringPerformance.benchmarkStringReplace           avgt    2     211.215          ns/op
+StringPerformance.benchmarkStringSplit             avgt    2     232.852          ns/op
+StringPerformance.benchmarkStringTokenizer         avgt    2    7655.864          ns/op
+StringPerformance.benchmarkStringValueOf           avgt    2      20.687          ns/op
 
  */
-@BenchmarkMode(Mode.SingleShotTime)
-@OutputTimeUnit(TimeUnit.MILLISECONDS)
-@Measurement(batchSize = 100000, iterations = 1)
-@Warmup(batchSize = 100000, iterations = 1)
-@State(Scope.Thread)
+@BenchmarkMode(Mode.AverageTime)
+@OutputTimeUnit(TimeUnit.NANOSECONDS)
+@State(Scope.Benchmark)
+@Fork(value = 1, jvmArgs = {"-Xms2G", "-Xmx2G"})
+@Warmup(iterations = 1)
+@Measurement(iterations = 2)
 public class StringPerformance {
 
     protected String baeldung = "baeldung";
@@ -71,11 +68,11 @@ public class StringPerformance {
     protected List<String> stringSplit = new ArrayList<>();
     protected List<String> stringTokenizer = new ArrayList<>();
 
-    @Benchmark
-    public String benchmarkStringDynamicConcat() {
-        result += baeldung;
-        return result;
-    }
+//    @Benchmark
+//    public String benchmarkStringDynamicConcat() {
+//        result += baeldung;
+//        return result;
+//    }
 
     @Benchmark
     public StringBuilder  benchmarkStringBuilder() {
@@ -84,107 +81,107 @@ public class StringPerformance {
         return stringBuilder;
     }
 
-    @Benchmark
-    public StringBuffer benchmarkStringBuffer() {
-        StringBuffer stringBuffer = new StringBuffer(result);
-        stringBuffer.append(baeldung);
-        return stringBuffer;
-    }
+//    @Benchmark
+//    public StringBuffer benchmarkStringBuffer() {
+//        StringBuffer stringBuffer = new StringBuffer(result);
+//        stringBuffer.append(baeldung);
+//        return stringBuffer;
+//    }
 
-    @Benchmark
-    public String benchmarkStringConstructor() {
-        String result = new String("baeldung");
-        return result;
-    }
+//    @Benchmark
+//    public String benchmarkStringConstructor() {
+//        String result = new String("baeldung");
+//        return result;
+//    }
 
-    @Benchmark
-    public String benchmarkStringLiteral() {
-        String result = "baeldung";
-        return result;
-    }
+//    @Benchmark
+//    public String benchmarkStringLiteral() {
+//        String result = "baeldung";
+//        return result;
+//    }
 
     @Benchmark
     public String benchmarkStringFormat_s() {
         return String.format(formatString, baeldung);
     }
 
-    @Benchmark
-    public String benchmarkStringConcat() {
-        result = result.concat(baeldung);
-        return result;
-    }
+//    @Benchmark
+//    public String benchmarkStringConcat() {
+//        result = result.concat(baeldung);
+//        return result;
+//    }
 
-    @Benchmark
-    public String benchmarkStringIntern() {
-        return baeldung.intern();
-    }
+//    @Benchmark
+//    public String benchmarkStringIntern() {
+//        return baeldung.intern();
+//    }
 
     @Benchmark
     public String benchmarkStringReplace() {
         return longString.replace("average", " average !!!");
     }
 
-    @Benchmark
-    public String benchmarkStringUtilsReplace() {
-        return StringUtils.replace(longString, "average", " average !!!");
-    }
+//    @Benchmark
+//    public String benchmarkStringUtilsReplace() {
+//        return StringUtils.replace(longString, "average", " average !!!");
+//    }
 
-    @Benchmark
-    public List<String> benchmarkGuavaSplitter() {
-        return Splitter.on(" ").trimResults()
-                .omitEmptyStrings()
-                .splitToList(longString);
-    }
+//    @Benchmark
+//    public List<String> benchmarkGuavaSplitter() {
+//        return Splitter.on(" ").trimResults()
+//                .omitEmptyStrings()
+//                .splitToList(longString);
+//    }
 
     @Benchmark
     public String [] benchmarkStringSplit() {
         return longString.split(emptyString);
     }
 
-    @Benchmark
-    public String [] benchmarkStringSplitPattern() {
-        return spacePattern.split(longString, 0);
-    }
+//    @Benchmark
+//    public String [] benchmarkStringSplitPattern() {
+//        return spacePattern.split(longString, 0);
+//    }
 
-    @Benchmark
-    public List benchmarkStringTokenizer() {
-        StringTokenizer st = new StringTokenizer(longString);
-        while (st.hasMoreTokens()) {
-            stringTokenizer.add(st.nextToken());
-        }
-        return stringTokenizer;
-    }
+//    @Benchmark
+//    public List benchmarkStringTokenizer() {
+//        StringTokenizer st = new StringTokenizer(longString);
+//        while (st.hasMoreTokens()) {
+//            stringTokenizer.add(st.nextToken());
+//        }
+//        return stringTokenizer;
+//    }
 
-    @Benchmark
-    public List benchmarkStringIndexOf() {
-        int pos = 0, end;
-        while ((end = longString.indexOf(' ', pos)) >= 0) {
-            stringSplit.add(longString.substring(pos, end));
-            pos = end + 1;
-        }
-        return stringSplit;
-    }
+//    @Benchmark
+//    public List benchmarkStringIndexOf() {
+//        int pos = 0, end;
+//        while ((end = longString.indexOf(' ', pos)) >= 0) {
+//            stringSplit.add(longString.substring(pos, end));
+//            pos = end + 1;
+//        }
+//        return stringSplit;
+//    }
 
-    @Benchmark
-    public String benchmarkIntegerToString() {
-        return Integer.toString(sampleNumber);
-    }
-
-    @Benchmark
-    public String benchmarkStringValueOf() {
-        return String.valueOf(sampleNumber);
-    }
+//    @Benchmark
+//    public String benchmarkIntegerToString() {
+//        return Integer.toString(sampleNumber);
+//    }
+//
+//    @Benchmark
+//    public String benchmarkStringValueOf() {
+//        return String.valueOf(sampleNumber);
+//    }
 
 
     @Benchmark
     public String benchmarkStringConvertPlus() {
-        return sampleNumber + "";
+        return sampleNumber + "ss";
     }
-
-        @Benchmark
-    public String benchmarkStringFormat_d() {
-        return String.format(formatDigit, sampleNumber);
-    }
+//
+//        @Benchmark
+//    public String benchmarkStringFormat_d() {
+//        return String.format(formatDigit, sampleNumber);
+//    }
 
     @Benchmark
     public boolean benchmarkStringEquals() {
@@ -196,31 +193,31 @@ public class StringPerformance {
     public boolean benchmarkStringEqualsIgnoreCase() {
         return longString.equalsIgnoreCase(baeldung);
     }
+//
+//    @Benchmark
+//    public boolean benchmarkStringMatches() {
+//        return longString.matches(baeldung);
+//    }
+//
+//    @Benchmark
+//    public boolean benchmarkPrecompiledMatches() {
+//        return longPattern.matcher(baeldung).matches();
+//    }
+//
+//    @Benchmark
+//    public int benchmarkStringCompareTo() {
+//        return longString.compareTo(baeldung);
+//    }
+//
+//    @Benchmark
+//    public boolean benchmarkStringIsEmpty() {
+//        return longString.isEmpty();
+//    }
 
-    @Benchmark
-    public boolean benchmarkStringMatches() {
-        return longString.matches(baeldung);
-    }
-
-    @Benchmark
-    public boolean benchmarkPrecompiledMatches() {
-        return longPattern.matcher(baeldung).matches();
-    }
-
-    @Benchmark
-    public int benchmarkStringCompareTo() {
-        return longString.compareTo(baeldung);
-    }
-
-    @Benchmark
-    public boolean benchmarkStringIsEmpty() {
-        return longString.isEmpty();
-    }
-
-    @Benchmark
-    public boolean benchmarkStringLengthZero() {
-        return longString.length() == 0;
-    }
+//    @Benchmark
+//    public boolean benchmarkStringLengthZero() {
+//        return longString.length() == 0;
+//    }
 
     public static void main(String[] args) throws Exception {
         Options options = new OptionsBuilder()

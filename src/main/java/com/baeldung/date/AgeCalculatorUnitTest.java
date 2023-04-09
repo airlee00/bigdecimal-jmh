@@ -5,9 +5,9 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
-
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
+import org.openjdk.jmh.annotations.Fork;
 import org.openjdk.jmh.annotations.Measurement;
 import org.openjdk.jmh.annotations.Mode;
 import org.openjdk.jmh.annotations.OutputTimeUnit;
@@ -18,12 +18,20 @@ import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 
-import com.baeldung.date.comparison.DateTimeComparisonUtilsUnitTest;
-@BenchmarkMode(Mode.SingleShotTime)
-@OutputTimeUnit(TimeUnit.MILLISECONDS)
-@Measurement(batchSize = 100000, iterations = 1)
-@Warmup(batchSize = 100000, iterations = 1)
-@State(Scope.Thread)
+/*
+ *
+Benchmark                                                     Mode  Cnt     Score   Error  Units
+AgeCalculatorUnitTest.givenDate_whenCalculateAge_thenOk       avgt    2  3026.803          ns/op
+AgeCalculatorUnitTest.givenJodaTime_whenCalculateAge_thenOk   avgt    2    22.000          ns/op
+AgeCalculatorUnitTest.givenLocalDate_whenCalculateAge_thenOk  avgt    2     2.045          ns/op
+
+ */
+@BenchmarkMode(Mode.AverageTime)
+@OutputTimeUnit(TimeUnit.NANOSECONDS)
+@State(Scope.Benchmark)
+@Fork(value = 1, jvmArgs = {"-Xms2G", "-Xmx2G"})
+@Warmup(iterations = 1)
+@Measurement(iterations = 2)
 public class AgeCalculatorUnitTest {
     AgeCalculator ageCalculator = new AgeCalculator();
 

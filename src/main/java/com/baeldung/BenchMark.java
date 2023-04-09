@@ -13,7 +13,11 @@ import org.openjdk.jmh.annotations.Param;
 import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.annotations.Warmup;
+import org.openjdk.jmh.runner.Runner;
+import org.openjdk.jmh.runner.options.Options;
+import org.openjdk.jmh.runner.options.OptionsBuilder;
 
+import com.baeldung.performance.HashMapBenchmark;
 import com.google.common.hash.Hasher;
 
 import calcCommonDTO.InterestList;
@@ -23,18 +27,29 @@ import calcDateUtil.CalcDateUtils;
 import calcUtil.CalcInterestRates;
 import calcUtil.CalcUtilTest;
 
+/**
+BenchMark.benchMark_bigdecimal                 10  avgt   10  0.397 ± 0.018  ms/op
+BenchMark.benchMark_bigdecimal                100  avgt   10  0.636 ± 0.012  ms/op
+BenchMark.benchMark_date                       10  avgt   10  0.203 ± 0.006  ms/op
+BenchMark.benchMark_date                      100  avgt   10  0.275 ± 0.007  ms/op
+BenchMark.benchMark_date_bigdecimal            10  avgt   10  0.249 ± 0.006  ms/op
+BenchMark.benchMark_date_bigdecimal           100  avgt   10  0.592 ± 0.008  ms/op
+BenchMark.benchMark_double                     10  avgt   10  0.201 ± 0.003  ms/op
+BenchMark.benchMark_double                    100  avgt   10  0.272 ± 0.003  ms/op
+
+ */
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.MILLISECONDS)
 @State(Scope.Benchmark)
-@Fork(value = 2, jvmArgs = {"-Xms2G", "-Xmx2G"})
-@Warmup(iterations = 0)
-@Measurement(iterations = 1)
+@Fork(value = 1, jvmArgs = {"-Xms2G", "-Xmx2G"})
+@Warmup(iterations = 1)
+@Measurement(iterations = 2)
 public class BenchMark {
 
-  /*  @State(Scope.Benchmark)
+   @State(Scope.Benchmark)
     public static class ExecutionPlan {
 
-        @Param({ "10" })//, "100", "500" , "1000"} )//, "300", "500", "1000" })
+        @Param({ "10" , "100" })//,"500" , "1000"} )//, "300", "500", "1000" })
         public int iterations;
 
         public Hasher murmur3;
@@ -111,7 +126,15 @@ public class BenchMark {
 
     }
 
-    */
+    public static void main(String[] args) throws Exception {
+        Options options = new OptionsBuilder()
+                .include(BenchMark.class.getSimpleName()).threads(1)
+                .forks(1).shouldFailOnError(true)
+                .shouldDoGC(true)
+                .jvmArgs("-server").build();
+        new Runner(options).run();
+    }
+
 //    @Fork(value = 1, warmups = 1)
 //    @Benchmark
 //    @BenchmarkMode(Mode.AverageTime)
